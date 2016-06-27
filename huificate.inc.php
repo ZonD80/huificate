@@ -21,7 +21,9 @@ function huificate($text)
     }
 
     $letter_replacements = array(
-        'а' => 'я'
+        'а' => 'я',
+        'о' => 'ё',
+        'ы'=>'е',
     );
     foreach ($to_huify[0] as $th) {
         preg_match_all('/[а-я]/iu', $th, $letters);
