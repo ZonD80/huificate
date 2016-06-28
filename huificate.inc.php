@@ -26,7 +26,10 @@ function huificate($text)
         'ы'=>'е',
     );
     foreach ($to_huify[0] as $th) {
-        preg_match_all('/[а-я]/iu', $th, $letters);
+        $matched_letters = preg_match_all('/[а-я]/iu', $th, $letters);
+        if (!$matched_letters) {
+            continue;
+        }
         $letters = $letters[0];
         $first_letter = array_shift($letters);
         $second_letter = array_shift($letters);
