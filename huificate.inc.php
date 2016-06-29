@@ -23,12 +23,16 @@ function huificate($text)
     $letter_replacements = array(
         'а' => 'я',
         'о' => 'ё',
-        'ы'=>'е',
+        'ы' => 'е',
     );
+
+    $return_false = true; // yes it is cool
     foreach ($to_huify[0] as $th) {
         $matched_letters = preg_match_all('/[а-я]/iu', $th, $letters);
         if (!$matched_letters) {
             continue;
+        } else {
+            $return_false = false;
         }
         $letters = $letters[0];
         $first_letter = array_shift($letters);
@@ -54,6 +58,10 @@ function huificate($text)
                 $text = preg_replace('/(^| )' . $th . '/iu', ' х' . $second_letter . ($letter_replacements[$third_letter] ? $letter_replacements[$third_letter] : $third_letter) . implode('', $letters), $text);
             }
         }
+    }
+
+    if ($return_false) {
+        return false;
     }
 
     return $text;
