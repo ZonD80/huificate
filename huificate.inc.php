@@ -35,12 +35,16 @@ function huificate($text)
         $second_letter = array_shift($letters);
         $third_letter = array_shift($letters);
         if ($second_letter != 'у') {
-            if (preg_match('/(а|е|ё|и|о|у|ы|э|ю|я)/ui', $second_letter)) {
+            if (preg_match('/(а|е|ё|и|о|у|ы|э|ю|я)/ui', $second_letter)) { // glasnaya
                 $text = preg_replace('/(^| )' . $th . '/iu', ' ху' . ($letter_replacements[$second_letter] ? $letter_replacements[$second_letter] : $second_letter) . $third_letter . implode('', $letters), $text);
 
             } else {
-                $text = preg_replace('/(^| )' . $th . '/iu', ' ху' . ($letter_replacements[$third_letter] ? $letter_replacements[$third_letter] : $third_letter) . implode('', $letters), $text);
+                if (preg_match('/(а|е|ё|и|о|у|ы|э|ю|я)/ui', $third_letter)) {
+                    $text = preg_replace('/(^| )' . $th . '/iu', ' ху' . ($letter_replacements[$third_letter] ? $letter_replacements[$third_letter] : $third_letter) . implode('', $letters), $text);
+                } else {
+                    $text = preg_replace('/(^| )' . $th . '/iu', ' ху' . implode('', $letters), $text);
 
+                }
             }
         } else {
             if ($third_letter != 'ю') {
