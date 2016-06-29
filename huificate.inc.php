@@ -24,6 +24,7 @@ function huificate($text)
         'а' => 'я',
         'о' => 'ё',
         'ы' => 'е',
+        'у' => 'й',
     );
 
     $return_false = true; // yes it is cool
@@ -38,24 +39,31 @@ function huificate($text)
         $first_letter = array_shift($letters);
         $second_letter = array_shift($letters);
         $third_letter = array_shift($letters);
-        if ($second_letter != 'у') {
-            if (preg_match('/(а|е|ё|и|о|у|ы|э|ю|я)/ui', $second_letter)) { // glasnaya
-                $text = preg_replace('/(^| )' . $th . '/iu', ' ху' . ($letter_replacements[$second_letter] ? $letter_replacements[$second_letter] : $second_letter) . $third_letter . implode('', $letters), $text);
+        if (preg_match('/(а|е|ё|и|о|у|ы|э|ю|я)/ui', $first_letter)) {
+            $text = preg_replace('/(^| )' . $th . '/iu', ' ху' . $first_letter. $second_letter. $third_letter . implode('', $letters), $text);
 
-            } else {
-                if (preg_match('/(а|е|ё|и|о|у|ы|э|ю|я)/ui', $third_letter)) {
-                    $text = preg_replace('/(^| )' . $th . '/iu', ' ху' . ($letter_replacements[$third_letter] ? $letter_replacements[$third_letter] : $third_letter) . implode('', $letters), $text);
+        }
+        else {
+            if ($second_letter != 'у') {
+                if (preg_match('/(а|е|ё|и|о|у|ы|э|ю|я)/ui', $second_letter)) { // glasnaya
+                    $text = preg_replace('/(^| )' . $th . '/iu', ' ху' . ($letter_replacements[$second_letter] ? $letter_replacements[$second_letter] : $second_letter) . $third_letter . implode('', $letters), $text);
+
                 } else {
-                    $text = preg_replace('/(^| )' . $th . '/iu', ' ху' . implode('', $letters), $text);
+                    if (preg_match('/(а|е|ё|и|о|у|ы|э|ю|я)/ui', $third_letter)) {
+                        $text = preg_replace('/(^| )' . $th . '/iu', ' ху' . ($letter_replacements[$third_letter] ? $letter_replacements[$third_letter] : $third_letter) . implode('', $letters), $text);
+                    } else {
+                        $text = preg_replace('/(^| )' . $th . '/iu', ' ху' . implode('', $letters), $text);
 
+                    }
                 }
-            }
-        } else {
-            if ($third_letter != 'ю') {
-
-                $text = preg_replace('/(^| )' . $th . '/iu', ' хую' . $third_letter . implode('', $letters), $text);
             } else {
-                $text = preg_replace('/(^| )' . $th . '/iu', ' х' . $second_letter . ($letter_replacements[$third_letter] ? $letter_replacements[$third_letter] : $third_letter) . implode('', $letters), $text);
+                if ($third_letter != 'ю') {
+
+                    $text = preg_replace('/(^| )' . $th . '/iu', ' хую' . $third_letter . implode('', $letters), $text);
+                }
+                else {
+                    $text = preg_replace('/(^| )' . $th . '/iu', ' х' . $second_letter . ($letter_replacements[$third_letter] ? $letter_replacements[$third_letter] : $third_letter) . implode('', $letters), $text);
+                }
             }
         }
     }
