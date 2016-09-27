@@ -26,6 +26,9 @@ function huificate($text)
         'ы' => 'е',
         'у' => 'й',
     );
+    $letter_replacements_soglasnie = array(
+        'ы' => 'и',
+    );
 
     $return_false = true; // yes it is cool
     foreach ($to_huify[0] as $th) {
@@ -46,8 +49,12 @@ function huificate($text)
         else {
             if ($second_letter != 'у') {
                 if (preg_match('/(а|е|ё|и|о|у|ы|э|ю|я)/ui', $second_letter)) { // glasnaya
-                    $text = preg_replace('/(^| )' . $th . '/iu', ' ху' . ($letter_replacements[$second_letter] ? $letter_replacements[$second_letter] : $second_letter) . $third_letter . implode('', $letters), $text);
+                    if (preg_match('/(с)/ui', $third_letter)) {
+                        $text = preg_replace('/(^| )' . $th . '/iu', ' ху' . ($letter_replacements_soglasnie[$second_letter] ? $letter_replacements_soglasnie[$second_letter] : $second_letter) . $third_letter . implode('', $letters), $text);
 
+                    } else {
+                        $text = preg_replace('/(^| )' . $th . '/iu', ' ху' . ($letter_replacements[$second_letter] ? $letter_replacements[$second_letter] : $second_letter) . $third_letter . implode('', $letters), $text);
+                    }
                 } else {
                     if (preg_match('/(а|е|ё|и|о|у|ы|э|ю|я)/ui', $third_letter)) {
                         $text = preg_replace('/(^| )' . $th . '/iu', ' ху' . ($letter_replacements[$third_letter] ? $letter_replacements[$third_letter] : $third_letter) . implode('', $letters), $text);
